@@ -30,4 +30,4 @@ there() {
   cd $1; basename `pwd`; }
 
 PS1='\[\e[0;36m\]👀 \w \[\e[0;33m\]$(git branch 2>/dev/null  | grep '\''^\*'\'' | sed '\''s/^\* //'\'' ) \[\e[0m\]▶ '
-PROMPT_COMMAND='echo -ne "👀 ${meme}: $(git branch 2>/dev/null | grep '\''^*'\'' | colrm 1 2):";PS1="$(there ..)/$(there .):\!\e[m ▶ "'
+PROMPT_COMMAND='echo -ne "🔆 ${meme}: $(git branch 2>/dev/null | grep '\''^*'\'' | colrm 1 2):";PS1="$(there ..)/$(there .):\!\e[m ▶ "'

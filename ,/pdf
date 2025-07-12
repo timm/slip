@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+pdf="$HOME/tmp/$(basename "${1%.*}").pdf"
+
+mkdir $HOME/tmp
+echo "pdf-ing $pdf ... "
+
+a2ps                        \
+  --file-align=virtual       \
+	--line-numbers=1            \
+	--pro=color                  \
+	--pretty=lisp               \
+	--chars-per-line=70            \
+	--left-title=""                 \
+	--borders=no                     \
+  --right-footer="page %s. of %s#"  \
+	--portrait                         \
+	--columns 2                         \
+	-M letter                            \
+	-o - $1 | ps2pdf - $pdf
+open $pdf

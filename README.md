@@ -18,100 +18,69 @@ SLIP has been tested on SBCL and CLISP and it should work on any
 any ANSI-compliant CL implementation. No dependencies.
 
 
-## ✨ Features
+# 🧠 Slip Quick Reference
 
-### `def` — like `defun`, but simpler
+_Slip_ = Common Lisp macros for clearer, shorter code.
 
-Supports optional and keyword arguments using familiar syntax:
+---
 
-```lisp
-(def greet (name (title "Dr.") (:loud nil))
-  (format t "~a ~a~%" title name)
-  (when loud (format t "LOUD MODE~%")))
-```
+## 🔧 Macros
 
-Here, forms like `(title "Dr.")` beome `&optional (title "Dr.")` and
-forms like `(:loud nil)` beome `&key (loud nil)`
+- `def`: like `defun`, supports `(x default)` and `(:key val)`
+  ```lisp
+  (def hi (name (title "Dr.")) (format t "~a ~a~%" title name))
+  ```
 
+- `->`: short lambda
+  ```lisp
+  (mapcar (-> (x) (* x x)) '(1 2 3))  ; ⇒ (1 4 9)
+  ```
 
-### `->` — short anonymous functions
+- `let+`: `let` + local `(-> ...)` functions
+  ```lisp
+  (let+ ((x 1) (inc (-> (y) (+ y 1)))) (inc x))  ; ⇒ 2
+  ```
 
-```lisp
-(mapcar (-> (x) (* x x)) '(1 2 3))  ; ⇒ (1 4 9)
-```
+- `map+`: mapcar + remove nil
+  ```lisp
+  (map+ (-> (x) (when (evenp x) x)) '(1 2 3 4))  ; ⇒ (2 4)
+  ```
 
+- `prog+`: safe `progn` (prints errors in SBCL)
+  ```lisp
+  (prog+ (/ 1 0))  ; prints ❌ not crash
+  ```
 
-### `let+` — extended let with inline function bindings
+- `?`: nested getf
+  ```lisp
+  (? x :a :b)  ; → (getf (getf x :a) :b)
+  ```
 
-Binds values like `let`, but auto-lifts `(-> ...)` forms to local
-functions:
+- `$foo`: → `(getf self :foo)`
+  ```lisp
+  (format t "~a" $name)
+  ```
 
-```lisp
-(let+ ((x 10)
-       (inc (-> (y) (+ y 1))))
-  (inc x))  ; ⇒ 11
-```
+- `say`: short format with `:out` stream
+  ```lisp
+  (say "Hi ~a" 'you)
+  (say "Err: ~a" 'oops :out *error-output*)
+  ```
 
+---
 
-### `map+` — `mapcar` with `nil` removed
-
-```lisp
-(map+ (-> (x) (when (evenp x) (* x x))) '(1 2 3 4))  ; ⇒ (4 16)
-```
-
-
-### `prog+` — safe block with error capture (on SBCL)
-Avoids pages and pages of error output.
-
-```lisp
-(prog+
-  (format t "Hello~%")
-  (/ 1 0))  ; prints error instead of crashing (SBCL only)
-```
-
-
-### `?` — nested property access
-
-```lisp
-(? config :user :email)  ; expands to nested getf
-```
-
-
-### `$` — shorthand for `(getf self :foo)`
-
-Inside a method, use:
-
-```lisp
-(def fred (self)
-  (format t "~a~%" $name)) ; exxpand to (getf self $name)
-```
-
-### `say` — short `format` with optional `:out` keyword
-
-```lisp
-(say "Hello ~a~%" 'world)
-(say "Oops: ~a~%" 'error :out *error-output*)
-```
-
-## 🛠️ Editor Support
-
-For Vim/Neovim, add this modeline to the top of your file:
+## 🛠 Vim
 
 ```lisp
 ;; <!-- vim: set lispwords+=let+,map+,def,prog+ : -->
 ```
 
-For Emacs, configure indentation:
+## 🧠 Emacs
 
 ```lisp
 (put 'def 'common-lisp-indent-function 'defun)
-(put 'let+ 'common-lisp-indent-function 'let)
-(put 'map+ 'common-lisp-indent-function '(&body))
-(put 'prog+ 'common-lisp-indent-function 'progn)
 ```
 
-
-
-## 🔍 License
+---
 
 MIT © 2025 Tim Menzies

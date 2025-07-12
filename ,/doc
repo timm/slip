@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+Here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+pycco -d $Here/../docs -l scheme "$@" 

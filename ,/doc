@@ -3,7 +3,7 @@ Here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 pycco -d $Here/../docs -l scheme "$@" 
 
 cat<<-'EOF' >> $Here/../docs/pycco.css
-/* --- Wider docs column override (350px) --- */
+/* --- Slightly wider docs column (≈350px) --- */
 div.docs {
   max-width: 350px !important;
   min-width: 350px !important;
@@ -16,6 +16,7 @@ div.code {
 #background {
   left: 430px !important;
 }
+
 EOF
 
 bash  $Here/menu.sh $Here/../docs/

@@ -123,7 +123,7 @@ and (:key default) for keyword arguments.</p>
 <span class="w">  </span><span class="o">#</span><span class="nv">+sbcl</span><span class="w"> </span><span class="o">`</span><span class="p">(</span><span class="nf">handler-case</span>
 <span class="w">            </span><span class="p">(</span><span class="nf">progn</span><span class="w"> </span><span class="o">,@</span><span class="nv">body</span><span class="p">)</span>
 <span class="w">            </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="p">(</span><span class="nf">e</span><span class="p">)</span>
-<span class="w">                   </span><span class="p">(</span><span class="nb">format</span><span class="w"> </span><span class="nv">t</span><span class="w"> </span><span class="s">&quot;❌ Error: ~A~%&quot;</span><span class="w"> </span><span class="nv">e</span><span class="p">))))</span></pre></div>
+<span class="w">              </span><span class="p">(</span><span class="nb">format</span><span class="w"> </span><span class="nv">t</span><span class="w"> </span><span class="s">&quot;❌ Error: ~A~%&quot;</span><span class="w"> </span><span class="nv">e</span><span class="p">))))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -152,9 +152,9 @@ and (:key default) for keyword arguments.</p>
 <span class="w">  </span><span class="sc">#\$</span>
 <span class="w">  </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="nf">stream</span><span class="w"> </span><span class="nv">char</span><span class="p">)</span>
 <span class="w">    </span><span class="o">`</span><span class="p">(</span><span class="nf">getf</span><span class="w"> </span><span class="nv">self</span><span class="w"> </span>
-<span class="w">           </span><span class="o">,</span><span class="p">(</span><span class="nf">intern</span><span class="w"> </span>
-<span class="w">              </span><span class="p">(</span><span class="nb">concatenate</span><span class="w"> </span><span class="ss">&#39;string</span><span class="w"> </span><span class="s">&quot;:&quot;</span><span class="w"> </span>
-<span class="w">                           </span><span class="p">(</span><span class="nb">string</span><span class="w"> </span><span class="p">(</span><span class="nb">read</span><span class="w"> </span><span class="nv">stream</span><span class="w"> </span><span class="nv">t</span><span class="w"> </span><span class="nv">nil</span><span class="w"> </span><span class="nv">t</span><span class="p">))))))</span>
+<span class="w">       </span><span class="o">,</span><span class="p">(</span><span class="nf">intern</span><span class="w"> </span>
+<span class="w">          </span><span class="p">(</span><span class="nb">concatenate</span><span class="w"> </span><span class="ss">&#39;string</span><span class="w"> </span><span class="s">&quot;:&quot;</span><span class="w"> </span>
+<span class="w">            </span><span class="p">(</span><span class="nb">string</span><span class="w"> </span><span class="p">(</span><span class="nb">read</span><span class="w"> </span><span class="nv">stream</span><span class="w"> </span><span class="nv">t</span><span class="w"> </span><span class="nv">nil</span><span class="w"> </span><span class="nv">t</span><span class="p">))))))</span>
 <span class="w">  </span><span class="nv">t</span><span class="p">)</span></pre></div>
     </div>
   </div>

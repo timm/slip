@@ -188,7 +188,7 @@ body .vc { color: #19469D }                     /* Name.Variable.Class */
 body .vg { color: #19469D }                     /* Name.Variable.Global */
 body .vi { color: #19469D }                     /* Name.Variable.Instance */
 body .il { color: #666666 }                     /* Literal.Number.Integer.Long */
-/* --- Wider docs column override (350px) --- */
+/* --- Slightly wider docs column (≈350px) --- */
 div.docs {
   max-width: 350px !important;
   min-width: 350px !important;
@@ -201,3 +201,4 @@ div.code {
 #background {
   left: 430px !important;
 }
+

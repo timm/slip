@@ -44,7 +44,7 @@
   #+sbcl `(handler-case
             (progn ,@body)
             (error (e)
-                   (format t "❌ Error: ~A~%" e))))
+              (format t "❌ Error: ~A~%" e))))
 
 ;; `?` → nested getf chain: (? x :a :b) ⇒ (getf (getf x :a) :b)
 (defmacro ? (x &rest keys)
@@ -55,9 +55,9 @@
   #\$
   (lambda (stream char)
     `(getf self 
-           ,(intern 
-              (concatenate 'string ":" 
-                           (string (read stream t nil t))))))
+       ,(intern 
+          (concatenate 'string ":" 
+            (string (read stream t nil t))))))
   t)
 
 ;; `say` → compact (format ...) with optional :out stream

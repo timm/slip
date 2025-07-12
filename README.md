@@ -1,4 +1,5 @@
 <p>
+<img width=200 align=right src="https://www.lisperati.com/lisplogo_flag2_256.png">
 <a href="https://github.com/timm/slip/blob/main/LICENSE.md"><img 
   src="https://img.shields.io/badge/license-MIT-brightgreen.svg?xstyle=for-the-badge" 
   alt="License"></a>

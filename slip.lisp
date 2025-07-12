@@ -1,4 +1,7 @@
-;; <!-- vim: set lispwords+=let+,map+,def,prog+ : -->
+;; <!-- vim: set lispwords+=let+,map+,def,prog+,->,format ts=2 sw=2 sts=2 et : -->
+
+(defun chr (s i)
+  (char (string s) (if (minusp i) (+ (length s) i) i)))
 
 ;; `def` → defun with support for optional and keyword arguments.
 ;; Args may be symbols (required), (x default) for optionals,
@@ -64,4 +67,35 @@
 (defmacro say (fmt &rest args)
   `(format t ,fmt ,@args))
 
-(defmacro structs (&rest 
+(defmacro str (fmt &rest args)
+  `(format nil ,fmt ,@args))
+
+(defparameter *float-places* 3)
+
+(defun show (x)
+  (if (floatp x)
+      (let* ((s (str "~,vf" *float-places* x))
+             (clean (string-right-trim "." (string-right-trim "0" s))))
+        (if (equal clean "") "0" clean))
+      x))
+
+(defmacro defstructs (&rest defs)
+  `(progn ,(mapcar #'_defstruct defs)))
+
+(defun _defstruct (spec)
+  (destructuring-bind (name (&optional isa) &rest rest) spec
+    (let+ ((ctor (second (member :make rest)))
+           (raw  (or (subseq rest 0 (position :make rest)) rest))
+           (slots (map+ (-> (s) (if (consp s) (car s) s)) raw)))
+      `(progn
+         (defstruct ,(append (list name)
+                             (when isa `((:include ,isa)))
+                             (when ctor `((:constructor ,ctor))))
+           ,@raw)
+         (defmethod slots ((x ,name)) ',slots)
+         (defmethod print-object ((x ,name) str)
+           (format str "(~a ~{~^ ~a~})" ',name
+             (map+ (-> (s)
+                     (unless (eql (chr s 0) #\_)
+                       (str ":~a ~s" s (show (slot-value x s)))))
+               (slots x))))))))

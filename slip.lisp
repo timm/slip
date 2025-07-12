@@ -12,9 +12,9 @@
         ((consp a) (push a opts))
         (t (push a opts))))
     `(defun ,name
-,(append
-         (when opts `(&optional ,@(nreverse opts)))
-         (when keys `(&key ,@(nreverse keys))))
+       ,(append
+          (when opts `(&optional ,@(nreverse opts)))
+          (when keys `(&key ,@(nreverse keys))))
        ,@body)))
 
 ;; `->` → shorthand for (lambda ...) with optional arg destructuring.
@@ -65,4 +65,3 @@
   `(format ,(or (getf a :out) 't)
            ,@(loop for (k v) on a unless (eq k :out) 
                    collect k and collect v)))
-

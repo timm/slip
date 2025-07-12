@@ -1,8 +1,8 @@
 ;; <!-- vim: set lispwords+=let+,map+,def,prog+ : -->
 (load "slip")
 
-(def hello (name (title "Dr.") (:loud nil))
-  (fmt "~a ~a~%" title name)
+(def hi (name (title "Dr.") (:loud nil))
+  (say "~a ~a~%" title name)
   (when loud (format t "LOUD MODE ~s ~%" loud)))
 
 (def x () (/ 0 a))

@@ -51,7 +51,8 @@
 
 ;; `?` → nested getf chain: (? x :a :b) ⇒ (getf (getf x :a) :b)
 (defmacro ? (x &rest keys)
-  (reduce (lambda (acc key) `(getf ,acc ',key)) keys :initial-value x))
+  (reduce (lambda (acc key) 
+            `(getf ,acc ',key)) keys :initial-value x))
 
 ;; `$foo` → shorthand for (getf self :foo)
 (set-macro-character 

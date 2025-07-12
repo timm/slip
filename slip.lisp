@@ -4,15 +4,15 @@
 ;; Args may be symbols (required), (x default) for optionals,
 ;; and (:key default) for keyword arguments.
 (defmacro def (name args &body body)
-  (let ((opts '()) (keys '()))
+  (let (pos opts keys)
     (dolist (a args)
-      (cond
-        ((and (consp a) (keywordp (car a)))
-         (push `(,(intern (symbol-name (car a))) ,(cadr a)) keys))
-        ((consp a) (push a opts))
-        (t (push a opts))))
+      (cond ((and (consp a) (keywordp (car a)))
+             (push `(,(intern (symbol-name (car a))) ,(cadr a)) keys))
+            ((consp a) (push a opts))
+            (t (push a pos))))
     `(defun ,name
        ,(append
+          (when pos `(,@(nreverse pos)))
           (when opts `(&optional ,@(nreverse opts)))
           (when keys `(&key ,@(nreverse keys))))
        ,@body)))
@@ -61,7 +61,7 @@
   t)
 
 ;; `say` → compact (format ...) with optional :out stream
-(defmacro say (&rest a)
-  `(format ,(or (getf a :out) 't)
-           ,@(loop for (k v) on a unless (eq k :out) 
-                   collect k and collect v)))
+(defmacro say (fmt &rest args)
+  `(format t ,fmt ,@args))
+
+(defmacro structs (&rest 

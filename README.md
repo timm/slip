@@ -6,7 +6,17 @@ _Slide past boilerplate. Think clearly. Write less._
 syntax for common tasks. It enables succinct, readable code with minimal
 overhead.
 
----
+## 📦 Installation
+
+Copy the file slip.lisp. Add this to the top of your code:
+
+```lisp
+(load "slip")
+```
+
+SLIP has been tested on SBCL and CLISP and it should work on any
+any ANSI-compliant CL implementation. No dependencies.
+
 
 ## ✨ Features
 
@@ -76,9 +86,6 @@ Inside a method, use:
   (format t "~a~%" $name)) ; exxpand to (getf self $name)
 ```
 
-### `say` — sh
-
-
 ### `say` — short `format` with optional `:out` keyword
 
 ```lisp
@@ -103,11 +110,6 @@ For Emacs, configure indentation:
 (put 'prog+ 'common-lisp-indent-function 'progn)
 ```
 
-
-## 📦 Installation
-
-Just copy the macros into your Common Lisp project. Slip works with
-any ANSI-compliant CL implementation. No dependencies.
 
 
 ## 🔍 License

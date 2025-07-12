@@ -7,18 +7,25 @@
 ;; Args may be symbols (required), (x default) for optionals,
 ;; and (:key default) for keyword arguments.
 (defmacro def (name args &body body)
-  (let (pos opts keys)
+  (let ((opts '()) (keys '()))
     (dolist (a args)
-      (cond ((and (consp a) (keywordp (car a)))
-             (push `(,(intern (symbol-name (car a))) ,(cadr a)) keys))
-            ((consp a) (push a opts))
-            (t (push a pos))))
-    `(defun ,name
-       ,(append
-          (when pos `(,@(nreverse pos)))
-          (when opts `(&optional ,@(nreverse opts)))
-          (when keys `(&key ,@(nreverse keys))))
-       ,@body)))
+      (cond
+        ((and (consp a) (keywordp (car a)))
+         (push `(,(intern (symbol-name (car a))) ,(cadr a)) keys))
+        ((consp a)
+         (push a opts))
+        (t (push a opts))))
+    `,(if (consp name)
+          `(defmethod ,@name
+             ,(append
+               (when opts `(&optional ,@(nreverse opts)))
+               (when keys `(&key ,@(nreverse keys))))
+             ,@body)
+          `(defun ,name
+             ,(append
+               (when opts `(&optional ,@(nreverse opts)))
+               (when keys `(&key ,@(nreverse keys))))
+             ,@body))))
 
 ;; `->` → shorthand for (lambda ...) with optional arg destructuring.
 (defmacro -> (args &body body)
@@ -67,36 +74,48 @@
 ;; `say` → compact (format ...) with optional :out stream
 (defmacro say (fmt &rest args)
   `(format t ,fmt ,@args))
+(defparameter *float-places* 3)
+
+(defun chr (x i)
+  (char (string x) (mod i (length (string x)))))
+
+(defmacro -> (args &body body)
+  `(lambda ,(if (symbolp args) (list args) args) ,@body))
+
+(defmacro map+ (f xs)
+  `(remove nil (mapcar ,f ,xs)))
 
 (defmacro str (fmt &rest args)
   `(format nil ,fmt ,@args))
 
-(defparameter *float-places* 3)
-
 (defun show (x)
   (if (floatp x)
       (let* ((s (str "~,vf" *float-places* x))
-             (clean (string-right-trim "." (string-right-trim "0" s))))
-        (if (equal clean "") "0" clean))
-      x))
+             (s (string-right-trim "." (string-right-trim "0" s))))
+        (if (equal s "") "0" s))
+      (str "~a" x)))
+
+(unless (find-class 'slip nil)
+  (defstruct slip))
+
+(defmethod print-object ((x slip) str)
+  (format str "(~a ~{~a~^ ~})" (type-of x)
+    (map+ (-> (s)
+           (unless (eql (chr s 0) #\_)
+             (str ":~a ~a" s (show (slot-value x s)))))
+          (slots x))))
 
 (defmacro defstructs (&rest defs)
-  `(progn ,(mapcar #'_defstruct defs)))
+  `(progn ,@(mapcar #'_defstruct defs)))
 
 (defun _defstruct (spec)
   (destructuring-bind (name (&optional isa) &rest rest) spec
-    (let+ ((ctor (second (member :make rest)))
+    (let* ((isa (or isa 'slip))
+           (ctor (second (member :make rest)))
            (raw  (or (subseq rest 0 (position :make rest)) rest))
-           (slots (map+ (-> (s) (if (consp s) (car s) s)) raw)))
+           (slots (mapcar (lambda (s) (if (consp s) (car s) s)) raw)))
       `(progn
-         (defstruct ,(append (list name)
-                             (when isa `((:include ,isa)))
+         (defstruct ,(append (list name `(:include ,isa))
                              (when ctor `((:constructor ,ctor))))
            ,@raw)
-         (defmethod slots ((x ,name)) ',slots)
-         (defmethod print-object ((x ,name) str)
-           (format str "(~a ~{~^ ~a~})" ',name
-             (map+ (-> (s)
-                     (unless (eql (chr s 0) #\_)
-                       (str ":~a ~s" s (show (slot-value x s)))))
-               (slots x))))))))
+         (defmethod slots ((x ,name)) ',slots)))))

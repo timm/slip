@@ -3,10 +3,10 @@
 
 (defstructs
   (col ()    (at 0) (txt "") (n 0))
-  (num (col) (mu 0) (m2 0) (sd 0) (w 1))
-  (sym (col)  has)
-  (cols ()    x y all klass)
-  (data ()    rows cols)
+  (num (col) (mu 0) (m2 0) (sd 0) (w 1) :make %num)
+  (sym (col)  has                       :make %sym)
+  (cols ()    x y all klass             :make %cols)
+  (data ()    rows cols                 :make %data))
 
 (def data (names (rows) (i '(:row () :cols (cols (car rows)))))
   (dolist (row (cdr rows) i)

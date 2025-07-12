@@ -1,3 +1,15 @@
+<p>
+<a href="https://github.com/timm/slip/blob/main/LICENSE.md"><img 
+  src="https://img.shields.io/badge/license-MIT-brightgreen.svg?xstyle=for-the-badge" 
+  alt="License"></a>
+<img 
+  src="https://img.shields.io/badge/language-Lisp-purple.svg?xstyle=for-the-badge" 
+  alt="Language">
+<a href="https://github.com/timm/slip"><img 
+  src="https://img.shields.io/badge/src-code-orange.svg?xstyle=for-the-badge" 
+  alt="Source Code"></a>
+</p>
+
 # 🧠 Slip: A Clean Lisp Dialect
 
 _Slip_ = Common Lisp macros for clearer, shorter code.

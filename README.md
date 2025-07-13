@@ -31,7 +31,7 @@ SLIP has been tested on SBCL and CLISP and it should work on any
 any ANSI-compliant CL implementation. No dependencies.
 
 
-# Quick Reference
+# Quick References
 
 
 ---

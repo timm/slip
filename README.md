@@ -14,7 +14,7 @@
 # 🧠 Slip: A Clean Lisp Dialect
 
 _Slip_ = Common Lisp macros for clearer, shorter code.
-hello
+
 **Slip** is a thin layer of macros atop Common Lisp that smooth out the
 syntax for common tasks. It enables succinct, readable code with minimal
 overhead.
@@ -31,7 +31,7 @@ SLIP has been tested on SBCL and CLISP and it should work on any
 any ANSI-compliant CL implementation. No dependencies.
 
 
-# Quick Referencess
+# Quick Reference
 
 
 ---
